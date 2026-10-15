@@ -74,6 +74,13 @@ See the official Django 6.1 tutorial for
 [views and URL registration](https://docs.djangoproject.com/en/6.1/intro/tutorial01/)
 and [app registration and models](https://docs.djangoproject.com/en/6.1/intro/tutorial02/).
 
+## Start a REST API
+
+Django REST framework and `django-cors-headers` are included and configured.
+Install the project dependencies with `python -m pip install -r requirements-dev.txt`.
+Create your own app, serializers, views, and URL patterns; no API app or
+authentication scheme is supplied.
+
 ## Git attributes
 
 Git detects text files automatically and normalizes them to LF. Checkouts use
@@ -92,7 +99,7 @@ Before submitting, verify that all files adhere to the required standards:
 python check_submission.py
 ```
 
-If all checks pass, you are ready to submit! If any checks fail, review the error output or run the auto-formatter below.
+Passing these checks confirms code style, not functional API behavior. Before submitting an API, also write and run functional tests for its endpoints. If style checks fail, review the error output or run the auto-formatter below.
 
 ### 2. Auto-Formatting
 To automatically format Python files, fix safe PEP-8 rules, format Django HTML templates, and format CSS/JS static files:
