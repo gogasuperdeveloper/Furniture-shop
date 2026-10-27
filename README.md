@@ -1,6 +1,6 @@
 ## Опис
 
-**FurniGoga** - інтернет-магазин меблів та товарів для дому.
+**FurniGoga** - інтернет-магазин меблів.
 
 На сайті буде каталог з товарами, які можна буде відфільтрувати за категорією, брендом, матеріалом. Також буде сортування за ціною (за зростанням та спаданням) та популярністю. Авторизовані користувачі можуть додавати товари до кошика та оформлювати замовлення. У профілі доступна історія замовлень і редагування особистих даних. Також є сторінка «Про нас» з контактами та умовами доставки і повернення.
 
@@ -235,3 +235,47 @@
 ## Схема бази даних
 
 ![Database Schema](./db_schema.png)
+
+## Як запустити проєкт
+
+### Вимоги
+- Python 3.12+
+
+### Встановлення
+
+```bash
+git clone https://github.com/gogasuperdeveloper/Furniture-shop.git
+cd Furniture-shop
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements-dev.txt
+```
+
+### Запуск
+
+```bash
+py manage.py migrate
+py manage.py runserver
+```
+
+API доступне за адресою: `http://127.0.0.1:8000/api/v1/`
+
+### Ендпоінти
+
+| Метод | URL | Опис |
+|-------|-----|------|
+| GET | /api/v1/products | Список товарів |
+| POST | /api/v1/products | Створити товар |
+| GET | /api/v1/products/{id} | Деталі товару |
+| PATCH | /api/v1/products/{id} | Оновити товар |
+| DELETE | /api/v1/products/{id} | Видалити товар |
+| GET | /api/v1/categories | Список категорій |
+| POST | /api/v1/categories | Створити категорію |
+| GET | /api/v1/categories/{id} | Деталі категорії |
+| PATCH | /api/v1/categories/{id} | Оновити категорію |
+| DELETE | /api/v1/categories/{id} | Видалити категорію |
+| GET | /api/v1/brands | Список брендів |
+| POST | /api/v1/brands | Створити бренд |
+| GET | /api/v1/brands/{id} | Деталі бренду |
+| PATCH | /api/v1/brands/{id} | Оновити бренд |
+| DELETE | /api/v1/brands/{id} | Видалити бренд |
