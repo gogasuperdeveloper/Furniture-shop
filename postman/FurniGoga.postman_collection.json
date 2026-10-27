@@ -1,0 +1,255 @@
+{
+  "info": {
+    "name": "FurniGoga API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api/v1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get all categories",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/categories"
+          }
+        },
+        {
+          "name": "Create category",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/categories",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Дивани\", \"description\": \"М'які меблі для вітальні\"}"
+            }
+          }
+        },
+        {
+          "name": "Create category - invalid (400)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/categories",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "Get category by id",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/categories/1"
+          }
+        },
+        {
+          "name": "Get category - not found (404)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/categories/9999"
+          }
+        },
+        {
+          "name": "Update category",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/categories/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"description\": \"Оновлений опис\"}"
+            }
+          }
+        },
+        {
+          "name": "Delete category - has products (409)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/categories/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Brands",
+      "item": [
+        {
+          "name": "Get all brands",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/brands"
+          }
+        },
+        {
+          "name": "Create brand",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/brands",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"JYSK\", \"country\": \"Данія\", \"description\": \"Скандинавський бренд меблів\"}"
+            }
+          }
+        },
+        {
+          "name": "Create brand - invalid (400)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/brands",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "Get brand by id",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/brands/1"
+          }
+        },
+        {
+          "name": "Get brand - not found (404)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/brands/9999"
+          }
+        },
+        {
+          "name": "Update brand",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/brands/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"country\": \"Швеція\"}"
+            }
+          }
+        },
+        {
+          "name": "Delete brand - has products (409)",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/brands/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get all products",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/products"
+          }
+        },
+        {
+          "name": "Get products - filter by category",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/products?category_id=1",
+              "query": [{ "key": "category_id", "value": "1" }]
+            }
+          }
+        },
+        {
+          "name": "Get products - filter by price",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/products?min_price=100&max_price=500&sort=price_asc",
+              "query": [
+                { "key": "min_price", "value": "100" },
+                { "key": "max_price", "value": "500" },
+                { "key": "sort", "value": "price_asc" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get products - search",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/products?search=диван",
+              "query": [{ "key": "search", "value": "диван" }]
+            }
+          }
+        },
+        {
+          "name": "Create product",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/products",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Диван Comfort\", \"description\": \"Зручний диван\", \"price\": \"4999.99\", \"stock_quantity\": 10, \"material\": \"Тканина\", \"color\": \"Сірий\", \"category\": 1, \"brand\": 1}"
+            }
+          }
+        },
+        {
+          "name": "Create product - invalid (400)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/products",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          }
+        },
+        {
+          "name": "Get product by id",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/products/1"
+          }
+        },
+        {
+          "name": "Get product - not found (404)",
+          "request": {
+            "method": "GET",
+            "url": "{{base_url}}/products/9999"
+          }
+        },
+        {
+          "name": "Update product",
+          "request": {
+            "method": "PATCH",
+            "url": "{{base_url}}/products/1",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"price\": \"3999.99\"}"
+            }
+          }
+        },
+        {
+          "name": "Delete product",
+          "request": {
+            "method": "DELETE",
+            "url": "{{base_url}}/products/1"
+          }
+        }
+      ]
+    }
+  ]
+}
