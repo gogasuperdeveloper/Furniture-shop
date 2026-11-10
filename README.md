@@ -178,38 +178,50 @@
 
 ---
 
-### Авторизація та профіль 
-*TODO: авторизація буде реалізована пізніше*
+### Авторизація
 
 | Метод | Endpoint | Опис |
 |---|---|---|
 | `POST` | `/auth/register` | Реєстрація |
-| `POST` | `/auth/login` | Вхід |
-| `POST` | `/auth/logout` | Вихід |
-| `GET` | `/users/me` | Профіль поточного користувача |
-| `PATCH` | `/users/me` | Оновити профіль |
+| `POST` | `/auth/token` | Логін (отримати access + refresh токени) |
+| `POST` | `/auth/token/refresh` | Оновити access токен |
 
 <details>
 <summary>Приклади запитів і відповідей</summary>
 
-**POST /auth/register - Request Body - 201 Created**
+**POST /auth/register — 201 Created**
 ```json
-{ "email": "user@example.com", "password": "...", "first_name": "Іван", "last_name": "Петренко" }
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "testpass123",
+  "password_confirmation": "testpass123",
+  "first_name": "Іван",
+  "last_name": "Петренко"
+}
 ```
 
-**POST /auth/login - Request Body - 200 OK**
+**POST /auth/token — 200 OK**
 ```json
-{ "email": "user@example.com", "password": "..." }
+{ "username": "testuser", "password": "testpass123" }
+```
+Відповідь:
+```json
+{ "access": "eyJ...", "refresh": "eyJ..." }
 ```
 
-**GET /users/me - 200 OK**
+**POST /auth/token/refresh — 200 OK**
 ```json
-{ "id": 1, "email": "user@example.com", "first_name": "Іван", "last_name": "Петренко", "phone": "+380501234567" }
+{ "refresh": "<refresh_token>" }
+```
+Відповідь:
+```json
+{ "access": "eyJ..." }
 ```
 
-**PATCH /users/me - Request Body - 200 OK**
+**401 Unauthorized (POST без токена)**
 ```json
-{ "phone": "+380501234567" }
+{ "detail": "Authentication credentials were not provided." }
 ```
 </details>
 
@@ -260,6 +272,24 @@ py manage.py runserver
 
 API доступне за адресою: `http://127.0.0.1:8000/api/v1/`
 
+## Автентифікація
+
+Використовується JWT через `djangorestframework-simplejwt`.
+
+- **Access token** — час життя 15 хвилин
+- **Refresh token** — час життя 7 днів
+
+### Як передавати токен
+Authorization: Bearer <access_token>
+
+### Права доступу
+
+| Дія | Доступ |
+|---|---|
+| GET (перегляд) | Всі (без токена) |
+| POST, PATCH, DELETE | Тільки авторизовані |
+
+
 ### Ендпоінти
 
 | Метод | URL | Опис |
@@ -279,3 +309,6 @@ API доступне за адресою: `http://127.0.0.1:8000/api/v1/`
 | GET | /api/v1/brands/{id} | Деталі бренду |
 | PATCH | /api/v1/brands/{id} | Оновити бренд |
 | DELETE | /api/v1/brands/{id} | Видалити бренд |
+| POST | /api/v1/auth/register | Реєстрація |
+| POST | /api/v1/auth/token | Логін |
+| POST | /api/v1/auth/token/refresh | Оновити токен |

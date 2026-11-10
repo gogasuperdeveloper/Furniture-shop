@@ -1,5 +1,6 @@
 from django.db.models import Q
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -13,6 +14,8 @@ from shop.serializers import (
 
 
 class CategoryListView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         categories = Category.objects.all()
         serializer = CategorySerializer(categories, many=True)
@@ -29,6 +32,8 @@ class CategoryListView(APIView):
 
 
 class CategoryDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request, pk):
         try:
             category = Category.objects.get(pk=pk)
@@ -76,6 +81,8 @@ class CategoryDetailView(APIView):
 
 
 class BrandListView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         brands = Brand.objects.all()
         serializer = BrandSerializer(brands, many=True)
@@ -92,6 +99,8 @@ class BrandListView(APIView):
 
 
 class BrandDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request, pk):
         try:
             brand = Brand.objects.get(pk=pk)
@@ -139,6 +148,8 @@ class BrandDetailView(APIView):
 
 
 class ProductListView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request):
         products = Product.objects.all()
 
@@ -188,6 +199,8 @@ class ProductListView(APIView):
 
 
 class ProductDetailView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     def get(self, request, pk):
         try:
             product = Product.objects.get(pk=pk)

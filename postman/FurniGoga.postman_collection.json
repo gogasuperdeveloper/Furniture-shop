@@ -7,9 +7,66 @@
     {
       "key": "base_url",
       "value": "http://127.0.0.1:8000/api/v1"
+    },
+    {
+      "key": "access_token",
+      "value": ""
     }
   ],
   "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"testuser\", \"email\": \"test@example.com\", \"password\": \"testpass123\", \"password_confirmation\": \"testpass123\", \"first_name\": \"Іван\", \"last_name\": \"Петренко\"}"
+            }
+          }
+        },
+        {
+          "name": "Register - invalid (400)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/register",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"testuser\", \"email\": \"not-an-email\", \"password\": \"123\", \"password_confirmation\": \"456\"}"
+            }
+          }
+        },
+        {
+          "name": "Login (get tokens)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/token",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"username\": \"testuser\", \"password\": \"testpass123\"}"
+            }
+          }
+        },
+        {
+          "name": "Refresh token",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/auth/token/refresh",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"refresh\": \"<вставте refresh токен>\"}"
+            }
+          }
+        }
+      ]
+    },
     {
       "name": "Categories",
       "item": [
@@ -25,10 +82,25 @@
           "request": {
             "method": "POST",
             "url": "{{base_url}}/categories",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\"name\": \"Дивани\", \"description\": \"М'які меблі для вітальні\"}"
+            }
+          }
+        },
+        {
+          "name": "Create category - no token (401)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/categories",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": \"Дивани\"}"
             }
           }
         },
@@ -37,7 +109,10 @@
           "request": {
             "method": "POST",
             "url": "{{base_url}}/categories",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{}"
@@ -63,7 +138,10 @@
           "request": {
             "method": "PATCH",
             "url": "{{base_url}}/categories/1",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\"description\": \"Оновлений опис\"}"
@@ -74,7 +152,10 @@
           "name": "Delete category - has products (409)",
           "request": {
             "method": "DELETE",
-            "url": "{{base_url}}/categories/1"
+            "url": "{{base_url}}/categories/1",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ]
           }
         }
       ]
@@ -94,7 +175,10 @@
           "request": {
             "method": "POST",
             "url": "{{base_url}}/brands",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\"name\": \"JYSK\", \"country\": \"Данія\", \"description\": \"Скандинавський бренд меблів\"}"
@@ -106,7 +190,10 @@
           "request": {
             "method": "POST",
             "url": "{{base_url}}/brands",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{}"
@@ -132,7 +219,10 @@
           "request": {
             "method": "PATCH",
             "url": "{{base_url}}/brands/1",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\"country\": \"Швеція\"}"
@@ -143,7 +233,10 @@
           "name": "Delete brand - has products (409)",
           "request": {
             "method": "DELETE",
-            "url": "{{base_url}}/brands/1"
+            "url": "{{base_url}}/brands/1",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ]
           }
         }
       ]
@@ -197,7 +290,10 @@
           "request": {
             "method": "POST",
             "url": "{{base_url}}/products",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\"name\": \"Диван Comfort\", \"description\": \"Зручний диван\", \"price\": \"4999.99\", \"stock_quantity\": 10, \"material\": \"Тканина\", \"color\": \"Сірий\", \"category\": 1, \"brand\": 1}"
@@ -209,7 +305,10 @@
           "request": {
             "method": "POST",
             "url": "{{base_url}}/products",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{}"
@@ -235,7 +334,10 @@
           "request": {
             "method": "PATCH",
             "url": "{{base_url}}/products/1",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\"price\": \"3999.99\"}"
@@ -246,7 +348,10 @@
           "name": "Delete product",
           "request": {
             "method": "DELETE",
-            "url": "{{base_url}}/products/1"
+            "url": "{{base_url}}/products/1",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ]
           }
         }
       ]
