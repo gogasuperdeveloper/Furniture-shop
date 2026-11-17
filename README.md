@@ -16,9 +16,9 @@
 |---|---|---|
 | `GET` | `/products` | Список товарів: `search`, `category_id`, `brand_id`, `material`, `min_price`, `max_price`, `sort` (`price_asc` / `price_desc` / `popularity`) |
 | `GET` | `/products/{id}` | Детальна інформація про товар |
-| `POST` | `/products` | Створити товар (адмін) |
-| `PATCH` | `/products/{id}` | Оновити товар (адмін) |
-| `DELETE` | `/products/{id}` | Видалити товар (адмін) |
+| `POST` | `/products` | Створити товар |
+| `PATCH` | `/products/{id}` | Оновити товар |
+| `DELETE` | `/products/{id}` | Видалити товар |
 
 <details>
 <summary>Приклади запитів і відповідей</summary>
@@ -61,9 +61,9 @@
 |---|---|---|
 | `GET` | `/categories` | Список усіх категорій |
 | `GET` | `/categories/{id}` | Категорія та всі її товари |
-| `POST` | `/categories` | Створити категорію (адмін) |
-| `PATCH` | `/categories/{id}` | Оновити категорію (адмін) |
-| `DELETE` | `/categories/{id}` | Видалити категорію (адмін) |
+| `POST` | `/categories` | Створити категорію |
+| `PATCH` | `/categories/{id}` | Оновити категорію |
+| `DELETE` | `/categories/{id}` | Видалити категорію |
 
 <details>
 <summary>Приклади запитів і відповідей</summary>
@@ -92,9 +92,9 @@
 |---|---|---|
 | `GET` | `/brands` | Список усіх брендів |
 | `GET` | `/brands/{id}` | Бренд та всі його товари |
-| `POST` | `/brands` | Створити бренд (адмін) |
-| `PATCH` | `/brands/{id}` | Оновити бренд (адмін) |
-| `DELETE` | `/brands/{id}` | Видалити бренд (адмін) |
+| `POST` | `/brands` | Створити бренд |
+| `PATCH` | `/brands/{id}` | Оновити бренд |
+| `DELETE` | `/brands/{id}` | Видалити бренд |
 
 <details>
 <summary>Приклади запитів і відповідей</summary>
@@ -154,7 +154,7 @@
 | Метод | Endpoint | Опис |
 |---|---|---|
 | `GET` | `/orders` | Список замовлень поточного користувача |
-| `POST` | `/orders` | Створити замовлення з кошика (кошик очищується) |
+| `POST` | `/orders` | Створити замовлення з кошика |
 | `GET` | `/orders/{id}` | Деталі конкретного замовлення |
 
 <details>
@@ -165,7 +165,7 @@
 [{ "id": 1, "status": "processing", "total_price": 25998.00, "created_at": "2026-10-13T18:00:00Z" }]
 ```
 
-**POST /orders - Request Body не потрібне - 201 Created**
+**POST /orders - 201 Created**
 ```json
 { "id": 1, "status": "processing", "total_price": 25998.00, "items": [...], "created_at": "2026-10-13T18:00:00Z" }
 ```
@@ -263,6 +263,17 @@ python -m venv .venv
 pip install -r requirements-dev.txt
 ```
 
+Скопіюй `.env.example` у `.env` та заповни змінні:
+
+```bash
+copy .env.example .env
+```
+
+| Змінна | Опис |
+|---|---|
+| `SECRET_KEY` | Секретний ключ Django |
+| `DEBUG` | `True` для розробки, `False` для продакшну |
+
 ### Запуск
 
 ```bash
@@ -272,6 +283,26 @@ py manage.py runserver
 
 API доступне за адресою: `http://127.0.0.1:8000/api/v1/`
 
+### Документація API
+
+- Swagger UI: `http://127.0.0.1:8000/api/docs/`
+- ReDoc: `http://127.0.0.1:8000/api/redoc/`
+- OpenAPI schema: `http://127.0.0.1:8000/api/schema/`
+
+### Запуск тестів
+
+```bash
+pytest
+```
+
+З відсотком покриття:
+
+```bash
+pytest --cov=shop --cov=users --cov-report=term-missing
+```
+
+---
+
 ## Автентифікація
 
 Використовується JWT через `djangorestframework-simplejwt`.
@@ -280,7 +311,10 @@ API доступне за адресою: `http://127.0.0.1:8000/api/v1/`
 - **Refresh token** — час життя 7 днів
 
 ### Як передавати токен
+
+```
 Authorization: Bearer <access_token>
+```
 
 ### Права доступу
 
@@ -289,26 +323,27 @@ Authorization: Bearer <access_token>
 | GET (перегляд) | Всі (без токена) |
 | POST, PATCH, DELETE | Тільки авторизовані |
 
+---
 
-### Ендпоінти
+### Всі ендпоінти
 
-| Метод | URL | Опис |
-|-------|-----|------|
-| GET | /api/v1/products | Список товарів |
-| POST | /api/v1/products | Створити товар |
-| GET | /api/v1/products/{id} | Деталі товару |
-| PATCH | /api/v1/products/{id} | Оновити товар |
-| DELETE | /api/v1/products/{id} | Видалити товар |
-| GET | /api/v1/categories | Список категорій |
-| POST | /api/v1/categories | Створити категорію |
-| GET | /api/v1/categories/{id} | Деталі категорії |
-| PATCH | /api/v1/categories/{id} | Оновити категорію |
-| DELETE | /api/v1/categories/{id} | Видалити категорію |
-| GET | /api/v1/brands | Список брендів |
-| POST | /api/v1/brands | Створити бренд |
-| GET | /api/v1/brands/{id} | Деталі бренду |
-| PATCH | /api/v1/brands/{id} | Оновити бренд |
-| DELETE | /api/v1/brands/{id} | Видалити бренд |
-| POST | /api/v1/auth/register | Реєстрація |
-| POST | /api/v1/auth/token | Логін |
-| POST | /api/v1/auth/token/refresh | Оновити токен |
+| Метод | URL | Опис | Auth |
+|-------|-----|------|------|
+| POST | /api/v1/auth/register | Реєстрація | — |
+| POST | /api/v1/auth/token | Логін | — |
+| POST | /api/v1/auth/token/refresh | Оновити токен | — |
+| GET | /api/v1/products | Список товарів | — |
+| POST | /api/v1/products | Створити товар | Auth |
+| GET | /api/v1/products/{id} | Деталі товару | — |
+| PATCH | /api/v1/products/{id} | Оновити товар | Auth |
+| DELETE | /api/v1/products/{id} | Видалити товар | Auth |
+| GET | /api/v1/categories | Список категорій | — |
+| POST | /api/v1/categories | Створити категорію | Auth |
+| GET | /api/v1/categories/{id} | Деталі категорії | — |
+| PATCH | /api/v1/categories/{id} | Оновити категорію | Auth |
+| DELETE | /api/v1/categories/{id} | Видалити категорію | Auth |
+| GET | /api/v1/brands | Список брендів | — |
+| POST | /api/v1/brands | Створити бренд | Auth |
+| GET | /api/v1/brands/{id} | Деталі бренду | — |
+| PATCH | /api/v1/brands/{id} | Оновити бренд | Auth |
+| DELETE | /api/v1/brands/{id} | Видалити бренд | Auth |
